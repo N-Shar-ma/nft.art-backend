@@ -57,6 +57,6 @@ app.get("/", (req, res) => {
     Creators.find()
         .then(creators => { req.send(creators) });;
 })
-app.listen(8080, () => {
+app.listen(process.env.PORT || 8080, () => {
     console.log("started listening")
 });
