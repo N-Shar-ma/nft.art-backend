@@ -12,29 +12,29 @@ const creatorSchema = new mongoose.Schema(
         name:
         {
             type: String,
-            require: [true, "Mandatory field"]
+            required: [true, "Mandatory field"]
         },
         DOB:
         {
-            type: String,
-            require: [true, "Mandatory field"]
+            type: Date,
+            required: [true, "Mandatory field"]
         },
         story: String,
         documentslink:
         {
             type: String,
-            require: [true, "Mandatory field"]
+            required: [true, "Mandatory field"]
         }
     }
 )
 
 const Creators = mongoose.model("Creator", creatorSchema);
 //function to add elements to the database
-function addToDatabase(name, story, DOB, documentslink) {
+async function addToDatabase(name, story, DOB, documentslink) {
     const creator = new Creators({
         name: name,
         story: story,
-        DOB: story,
+        DOB: DOB,
         documentslink: documentslink
     });
     let error = 0;
@@ -44,12 +44,12 @@ function addToDatabase(name, story, DOB, documentslink) {
     return error;
 }
 //configuring our server to respond to requests
-app.post("/", (req, res) => {
+app.post("/", async (req, res) => {
     const name = req.body.name;
     const story = req.body.story;
     const DOB = req.body.DOB;
     const documentslink = req.body.documentslink;
-    const check = addToDatabase(name, story, DOB, documentslink);
+    const check = await addToDatabase(name, story, DOB, documentslink);
     if (check == 0)
         console.log("value added");
     else
@@ -57,7 +57,7 @@ app.post("/", (req, res) => {
 });
 app.get("/", (req, res) => {
     Creators.find()
-        .then(creators => { req.send(creators) });;
+        .then(creators => { res.send(creators) });
 })
 app.listen(process.env.PORT || 8080, () => {
     console.log("started listening")
