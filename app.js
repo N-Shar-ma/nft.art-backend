@@ -1,7 +1,9 @@
 import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
+import cors from "cors";
 const app = express();
+app.use(cors({origin: "https://nftart.netlify.app/"}));
 app.use(bodyParser.urlencoded({ extended: false }));
 mongoose.connect('mongodb+srv://username:xa1yDR6wPKUaTRM7@cluster0.gcyg9.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
 // making schedma for the creators
